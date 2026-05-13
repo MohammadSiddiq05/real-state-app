@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
+
+const types = ["buy", "rent"]
 
 const SearchBar = () => {
+
+    const [query, setQuery] = useState({
+        type: "buy",
+        city: "",
+        minprice: 0,
+        maxprice: 0
+    })
+
+    
+
     return (
         <div className='searchBar'>
 
