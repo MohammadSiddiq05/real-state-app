@@ -32,7 +32,7 @@ const HomePage = () => {
             flex
             flex-col
             justify-center
-            gap-6
+            gap-4
             w-full
           "
         >
@@ -41,8 +41,8 @@ const HomePage = () => {
           <h1
             className="
               text-[34px]
-              md:text-[42px]
-              xl:text-[52px]
+              md:text-[36px]
+              xl:text-[40px]
               font-bold
               leading-tight
               max-w-[600px]

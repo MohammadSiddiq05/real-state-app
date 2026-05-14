@@ -43,7 +43,7 @@ const Navbar = () => {
             />
 
             <span className="hidden sm:block md:hidden lg:block">
-              LamaEstate
+              EmmaEstate
             </span>
           </a>
 
