@@ -1,161 +1,214 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
+  const user = true;
+
   return (
     <nav
       className="
-        absolute
+        fixed
         top-0
         left-0
         w-full
         h-[100px]
-        z-50
+        bg-white
+        z-[999]
       "
     >
       <div
         className="
-          h-full
           max-w-[1400px]
+          h-full
           mx-auto
           px-5
           md:px-10
           lg:px-16
-          xl:px-24
           flex
           items-center
           justify-between
         "
       >
-        
         {/* LEFT */}
-        <div className="flex flex-1 md:flex-[3] items-center gap-12">
-          
-          <a
-            href="/"
-            className="flex items-center gap-2 font-bold text-2xl"
+        <div
+          className="
+            flex
+            items-center
+            gap-8
+            lg:gap-12
+          "
+        >
+          <Link
+            to="/"
+            className="
+              flex
+              items-center
+              gap-2
+              font-bold
+              text-2xl
+            "
           >
             <img
               src="/logo.png"
               alt="logo"
-              className="w-7"
+              className="w-7 h-7"
             />
 
-            <span className="hidden sm:block md:hidden lg:block">
+            <span className="hidden sm:block">
               EmmaEstate
             </span>
-          </a>
+          </Link>
 
-          <a
-            href="/"
+          <div
             className="
-              hidden md:block
-              hover:scale-105
-              transition-all
-              duration-300
+              hidden
+              md:flex
+              items-center
+              gap-8
+              lg:gap-10
             "
           >
-            Home
-          </a>
+            <Link
+              to="/"
+              className="hover:scale-105 transition"
+            >
+              Home
+            </Link>
 
-          <a
-            href="/"
-            className="
-              hidden md:block
-              hover:scale-105
-              transition-all
-              duration-300
-            "
-          >
-            About
-          </a>
+            <Link
+              to="/"
+              className="hover:scale-105 transition"
+            >
+              About
+            </Link>
 
-          <a
-            href="/"
-            className="
-              hidden md:block
-              hover:scale-105
-              transition-all
-              duration-300
-            "
-          >
-            Contact
-          </a>
+            <Link
+              to="/"
+              className="hover:scale-105 transition"
+            >
+              Contact
+            </Link>
 
-          <a
-            href="/"
-            className="
-              hidden md:block
-              hover:scale-105
-              transition-all
-              duration-300
-            "
-          >
-            Agents
-          </a>
+            <Link
+              to="/"
+              className="hover:scale-105 transition"
+            >
+              Agents
+            </Link>
+          </div>
         </div>
 
         {/* RIGHT */}
-        <div
-          className="
-            flex
-            flex-[2]
-            items-center
-            justify-end
-            h-full
-            bg-[#fcf5f3]
-            md:bg-transparent
-          "
-        >
-          
-          <a
-            href="/"
-            className="
-              hidden md:block
-              px-6 py-3
-              hover:scale-105
-              transition-all
-              duration-300
-            "
-          >
-            Sign In
-          </a>
+        <div className="flex items-center">
+          {user ? (
+            <div className="hidden md:flex items-center gap-5">
+              
+              {/* PROFILE IMAGE */}
+              <img
+                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt=""
+                className="
+                  w-11
+                  h-11
+                  rounded-full
+                  object-cover
+                  border-2
+                  border-white
+                  shadow-md
+                "
+              />
 
-          <a
-            href="/"
-            className="
-              hidden md:block
-              px-6 py-3
-              bg-[#fece51]
-              hover:scale-105
-              transition-all
-              duration-300
-            "
-          >
-            Profile
-          </a>
+              <span className="font-medium">
+                John Doe
+              </span>
 
-          {/* ICON */}
-          <div className="block md:hidden z-[999]">
+              {/* PROFILE BUTTON */}
+              <Link
+                to="/profile"
+                className="
+                  relative
+                  bg-[#fece51]
+                  px-6
+                  py-3
+                  rounded-md
+                  font-medium
+                "
+              >
+                Profile
+
+                <div
+                  className="
+                    absolute
+                    -top-2
+                    -right-2
+                    w-6
+                    h-6
+                    rounded-full
+                    bg-red-500
+                    text-white
+                    text-sm
+                    flex
+                    items-center
+                    justify-center
+                  "
+                >
+                  3
+                </div>
+              </Link>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center">
+              <Link
+                to="/login"
+                className="
+                  px-5
+                  py-3
+                  hover:scale-105
+                  transition
+                "
+              >
+                Sign In
+              </Link>
+
+              <Link
+                to="/register"
+                className="
+                  bg-[#fece51]
+                  px-5
+                  py-3
+                  rounded-md
+                  hover:scale-105
+                  transition
+                "
+              >
+                Register
+              </Link>
+            </div>
+          )}
+
+          {/* MOBILE MENU ICON */}
+          <div className="md:hidden ml-4 z-[1000]">
             <img
               src="/menu.png"
-              alt="menu"
+              alt=""
               className="w-9 h-9 cursor-pointer"
-              onClick={() => setOpen((prev) => !prev)}
+              onClick={() => setOpen(!open)}
             />
           </div>
 
           {/* MOBILE MENU */}
           <div
             className={`
-              md:hidden
               fixed
               top-0
-              right-0
-              h-screen
+              ${
+                open ? "right-0" : "-right-full"
+              }
               w-[70%]
               sm:w-[50%]
+              h-screen
               bg-black
               text-white
               flex
@@ -164,44 +217,40 @@ const Navbar = () => {
               justify-center
               gap-8
               text-2xl
-              transition-transform
+              transition-all
               duration-500
-              z-[998]
-              ${open ? "translate-x-0" : "translate-x-full"}
+              md:hidden
             `}
           >
-            <a href="/" onClick={() => setOpen(false)}>
+            <Link to="/" onClick={() => setOpen(false)}>
               Home
-            </a>
+            </Link>
 
-            <a href="/" onClick={() => setOpen(false)}>
+            <Link to="/" onClick={() => setOpen(false)}>
               About
-            </a>
+            </Link>
 
-            <a href="/" onClick={() => setOpen(false)}>
+            <Link to="/" onClick={() => setOpen(false)}>
               Contact
-            </a>
+            </Link>
 
-            <a href="/" onClick={() => setOpen(false)}>
+            <Link to="/" onClick={() => setOpen(false)}>
               Agents
-            </a>
+            </Link>
 
-            <a href="/" onClick={() => setOpen(false)}>
-              Sign In
-            </a>
-
-            <a
-              href="/"
+            <Link
+              to="/profile"
+              onClick={() => setOpen(false)}
               className="
                 bg-[#fece51]
-                px-6 py-3
-                rounded-md
                 text-black
+                px-6
+                py-3
+                rounded-md
               "
-              onClick={() => setOpen(false)}
             >
               Profile
-            </a>
+            </Link>
           </div>
         </div>
       </div>
