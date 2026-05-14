@@ -1,5 +1,6 @@
 import React from "react";
 import List from "../../components/list/List";
+import Chat from "../../components/chat/Chat";
 
 const ProfilePage = () => {
   return (
@@ -7,27 +8,25 @@ const ProfilePage = () => {
       className="
         flex
         flex-col
-        md:flex-row
+        lg:flex-row
         h-full
-        overflow-y-auto
-        md:overflow-hidden
       "
     >
-      {/* LEFT SIDE */}
+      {/* LEFT */}
       <div
         className="
           flex-[3]
           overflow-y-auto
-          pb-12
+          pb-10
         "
       >
         <div
           className="
-            pr-0
-            md:pr-10
             flex
             flex-col
             gap-12
+            pr-0
+            lg:pr-10
           "
         >
           {/* USER INFO */}
@@ -36,13 +35,14 @@ const ProfilePage = () => {
               flex
               items-center
               justify-between
-              gap-5
               flex-wrap
+              gap-4
             "
           >
             <h1
               className="
-                text-3xl
+                text-2xl
+                md:text-3xl
                 font-light
               "
             >
@@ -51,7 +51,7 @@ const ProfilePage = () => {
 
             <button
               className="
-                px-6
+                px-5
                 py-3
                 bg-[#fece51]
                 rounded-md
@@ -72,48 +72,59 @@ const ProfilePage = () => {
               gap-5
             "
           >
-            <span
+            <div
               className="
                 flex
                 items-center
-                gap-5
+                gap-4
               "
             >
-              Avatar :
+              <span className="font-medium">
+                Avatar:
+              </span>
+
               <img
                 src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 alt=""
                 className="
-                  w-10
-                  h-10
+                  w-12
+                  h-12
                   rounded-full
                   object-cover
                 "
               />
-            </span>
+            </div>
 
-            <span
+            <div
               className="
                 flex
                 items-center
-                gap-5
+                gap-3
+                flex-wrap
               "
             >
-              Username :
-              <b>Siddiq</b>
-            </span>
+              <span className="font-medium">
+                Username:
+              </span>
 
-            <span
+              <b>Siddiq</b>
+            </div>
+
+            <div
               className="
                 flex
                 items-center
-                gap-5
+                gap-3
+                flex-wrap
                 break-all
               "
             >
-              E-mail :
+              <span className="font-medium">
+                E-mail:
+              </span>
+
               <b>siddiqshah478@gmail.com</b>
-            </span>
+            </div>
           </div>
 
           {/* MY LIST */}
@@ -122,13 +133,14 @@ const ProfilePage = () => {
               flex
               items-center
               justify-between
-              gap-5
               flex-wrap
+              gap-4
             "
           >
             <h1
               className="
-                text-3xl
+                text-2xl
+                md:text-3xl
                 font-light
               "
             >
@@ -137,7 +149,7 @@ const ProfilePage = () => {
 
             <button
               className="
-                px-6
+                px-5
                 py-3
                 bg-[#fece51]
                 rounded-md
@@ -153,16 +165,11 @@ const ProfilePage = () => {
           <List />
 
           {/* SAVED LIST */}
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-            "
-          >
+          <div>
             <h1
               className="
-                text-3xl
+                text-2xl
+                md:text-3xl
                 font-light
               "
             >
@@ -174,23 +181,27 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
       <div
         className="
           flex-[2]
           bg-[#fcf5f3]
-          h-full
           mt-10
-          md:mt-0
+          lg:mt-0
+          rounded-t-3xl
+          lg:rounded-none
+          min-h-[500px]
         "
       >
         <div
           className="
-            px-5
             h-full
+            px-4
+            md:px-5
+            py-5
           "
         >
-          {/* CHAT SECTION */}
+          <Chat />
         </div>
       </div>
     </div>
