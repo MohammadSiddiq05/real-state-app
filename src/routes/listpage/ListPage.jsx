@@ -2,6 +2,7 @@ import React from "react";
 import { listData } from "../../lib/dummydata";
 import Filter from "../../components/filter/filter";
 import Card from "../../components/card/card";
+import Map from "../../components/map/Map";
 
 const ListPage = () => {
   const data = listData;
@@ -54,7 +55,7 @@ const ListPage = () => {
           font-semibold
         "
       >
-        Map
+        <Map items={data}/>
       </div>
     </div>
   );
