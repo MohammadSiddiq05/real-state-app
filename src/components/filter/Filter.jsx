@@ -5,7 +5,7 @@ const Filter = () => {
     <div className="flex flex-col gap-3">
       
       <h1 className="text-2xl font-light">
-        Search results for Tokyo
+        Search results for London
       </h1>
 
       <div>
