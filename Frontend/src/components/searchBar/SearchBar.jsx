@@ -26,6 +26,7 @@ const SearchBar = () => {
             className={`
               px-8 py-4
               border border-[#999]
+              cursor-pointer
               border-b-0
               capitalize
               transition-all
@@ -116,7 +117,7 @@ const SearchBar = () => {
           <img
             src="/search.png"
             alt="search"
-            className="w-6 h-6"
+            className="w-6 h-6 cursor-pointer"
           />
         </button>
       </form>
