@@ -46,7 +46,7 @@ const login = async (req, res) => {
       where: { email },
     });
 
-    
+
 
     if (!user) {
       return res.status(401).json({
@@ -70,6 +70,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       {
         id: user.id,
+        isAdmin : false
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: age }
