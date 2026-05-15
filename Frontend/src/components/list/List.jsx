@@ -1,6 +1,6 @@
 import React from "react";
 import { listData } from "../../lib/dummydata";
-import Card from "../card/card";
+import Card from "../card/Card";
 
 const List = () => {
   return (
