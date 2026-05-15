@@ -7,6 +7,8 @@ import ListPage from './routes/listpage/ListPage'
 import { Layout } from './routes/layout/Layout'
 import SinglePage from './routes/singlepage/SinglePage'
 import ProfilePage from './routes/profilePage/ProfilePage'
+import Login from './routes/login/Login'
+import Register from './routes/register/Register'
 
 
 const App = () => {
@@ -31,7 +33,15 @@ const App = () => {
         {
           path: "/profile",
           element : <ProfilePage/>
-        }
+        },
+         {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
+        },
       ]
     }
   ])
