@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Send } from "lucide-react";
 
 const Chat = () => {
   const [chat, setChat] = useState(true);
@@ -141,10 +140,9 @@ const Chat = () => {
                   flex-col
                   gap-2
                   max-w-[70%]
-                  ${
-                    index % 2 === 0
-                      ? "self-start"
-                      : "self-end text-right"
+                  ${index % 2 === 0
+                    ? "self-start"
+                    : "self-end text-right"
                   }
                 `}
               >
@@ -207,7 +205,7 @@ const Chat = () => {
                 transition
               "
             >
-              <Send size={22} />
+              Send
             </button>
           </div>
         </div>

@@ -1,10 +1,30 @@
 import React from "react";
 import List from "../../components/list/List";
 import Chat from "../../components/chat/Chat";
+import apiRequest from "../../lib/apiRequest";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import ProfileUpdatePage from '../profileUpdatePage/ProfileUpdatePage'
 
 const ProfilePage = () => {
+
+  const {updateUser, currentUser} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+const handleLogout = async () => {
+  try {
+    await apiRequest.post("/auth/logout");
+
+    updateUser(null)
+    navigate("/login");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
   return (
-    <div
+   <div
       className="
         flex
         flex-col
@@ -49,7 +69,7 @@ const ProfilePage = () => {
               User Information
             </h1>
 
-            <button
+            <Link to="/profile/update"><button
               className="
                 px-5
                 py-3
@@ -61,7 +81,7 @@ const ProfilePage = () => {
               "
             >
               Update Profile
-            </button>
+            </button></Link>
           </div>
 
           {/* INFO */}
@@ -84,7 +104,7 @@ const ProfilePage = () => {
               </span>
 
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={currentUser?.avatar || "/noavatar.png"}
                 alt=""
                 className="
                   w-12
@@ -107,7 +127,7 @@ const ProfilePage = () => {
                 Username:
               </span>
 
-              <b>Siddiq</b>
+              <b>{currentUser?.username}</b>
             </div>
 
             <div
@@ -123,7 +143,10 @@ const ProfilePage = () => {
                 E-mail:
               </span>
 
-              <b>siddiqshah478@gmail.com</b>
+              <b>{currentUser?.email}</b>
+              <button className="w-[100px] bg-teal-600 border-none text-white py-[10px] px-[20px] cursor-pointer rounded-[5px]" onClick={handleLogout}>
+  Logout
+</button>
             </div>
           </div>
 
