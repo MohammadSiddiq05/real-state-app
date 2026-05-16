@@ -9,6 +9,7 @@ import SinglePage from './routes/singlepage/SinglePage'
 import ProfilePage from './routes/profilePage/ProfilePage'
 import Login from './routes/login/Login'
 import Register from './routes/register/Register'
+import ProfileUpdatePage from './routes/profileUpdatePage/ProfileUpdatePage'
 
 
 const App = () => {
@@ -41,15 +42,19 @@ const App = () => {
         },
       ]
     }, {
-      path: "/",
-      element: <RequireAuth />,
-      children: [
-        {
-          path: "/profile",
-          element: <ProfilePage />
-        },
-      ]
-    }
+  path: "/",
+  element: <RequireAuth />,
+  children: [
+    {
+      path: "/profile",
+      element: <ProfilePage />
+    },
+    {
+      path: "/profile/update",
+      element: <ProfileUpdatePage />
+    },
+  ]
+}
   ])
   return (
 

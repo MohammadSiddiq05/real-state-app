@@ -2,14 +2,14 @@ import React from "react";
 import List from "../../components/list/List";
 import Chat from "../../components/chat/Chat";
 import apiRequest from "../../lib/apiRequest";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import ProfileUpdatePage from '../profileUpdatePage/ProfileUpdatePage'
 
 const ProfilePage = () => {
 
   const {updateUser, currentUser} = useContext(AuthContext)
-
   const navigate = useNavigate()
 
 const handleLogout = async () => {
@@ -69,7 +69,7 @@ const handleLogout = async () => {
               User Information
             </h1>
 
-            <button
+            <Link to="/profile/update"><button
               className="
                 px-5
                 py-3
@@ -81,7 +81,7 @@ const handleLogout = async () => {
               "
             >
               Update Profile
-            </button>
+            </button></Link>
           </div>
 
           {/* INFO */}
@@ -104,7 +104,7 @@ const handleLogout = async () => {
               </span>
 
               <img
-                src={currentUser?.avatar}
+                src={currentUser?.avatar || "/noavatar.png"}
                 alt=""
                 className="
                   w-12
