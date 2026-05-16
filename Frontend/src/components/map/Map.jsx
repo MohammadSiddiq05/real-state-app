@@ -8,7 +8,9 @@ function Map({ items }) {
       center={
         items.length === 1
           ? [items[0].latitude, items[0].longitude]
-          : [52.4797, -1.90269]
+          : items.length > 0
+            ? [items[0].latitude, items[0].longitude] 
+            : [24.8607, 67.0011]
       }
       zoom={7}
       scrollWheelZoom={false}
@@ -19,7 +21,7 @@ function Map({ items }) {
       "
     >
       <TileLayer
-         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">
          OpenStreetMap</a> \contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
