@@ -1,5 +1,4 @@
 import express from "express"
-import authController from "../controllers/auth.controller.js"
 import userController from "../controllers/user.controller.js"
 import { verifyToken } from "../middleware/verify.js"
 

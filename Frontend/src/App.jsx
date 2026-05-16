@@ -10,6 +10,8 @@ import ProfilePage from './routes/profilePage/ProfilePage'
 import Login from './routes/login/Login'
 import Register from './routes/register/Register'
 import ProfileUpdatePage from './routes/profileUpdatePage/ProfileUpdatePage'
+import NewPostPage from './routes/newpostpage/NewPostPage'
+import { listPageLoader, singlePageLoader } from './lib/loader'
 
 
 const App = () => {
@@ -25,11 +27,13 @@ const App = () => {
         },
         {
           path: "/list",
-          element: <ListPage />
+          element: <ListPage />,
+          loader  : listPageLoader
         },
         {
           path: "/:id",
-          element: <SinglePage />
+          element: <SinglePage />,
+          loader : singlePageLoader
         },
 
         {
@@ -53,6 +57,10 @@ const App = () => {
       path: "/profile/update",
       element: <ProfileUpdatePage />
     },
+    {
+      path : "/add",
+      element : <NewPostPage/>
+    }
   ]
 }
   ])

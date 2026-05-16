@@ -1,9 +1,16 @@
 import React from "react";
 import Slider from "../../components/slider/Slider";
-import { singlePostData, userData } from "../../lib/dummydata";
 import Map from "../../components/map/Map";
+import { useLoaderData } from "react-router-dom";
+import Dompurify from "dompurify"
 
 const SinglePage = () => {
+  const post = useLoaderData();
+
+  if (!post) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div
       className="
@@ -13,7 +20,6 @@ const SinglePage = () => {
         h-full
       "
     >
-      
       {/* LEFT */}
       <div
         className="
@@ -28,13 +34,11 @@ const SinglePage = () => {
             pb-10
           "
         >
-          
           {/* SLIDER */}
-          <Slider images={singlePostData.images} />
+          <Slider images={post.images || []} />
 
           {/* INFO */}
           <div className="mt-12">
-            
             {/* TOP */}
             <div
               className="
@@ -45,7 +49,6 @@ const SinglePage = () => {
                 gap-6
               "
             >
-              
               {/* POST */}
               <div
                 className="
@@ -61,7 +64,7 @@ const SinglePage = () => {
                     text-gray-800
                   "
                 >
-                  {singlePostData.title}
+                  {post.title}
                 </h1>
 
                 {/* ADDRESS */}
@@ -80,7 +83,7 @@ const SinglePage = () => {
                     className="w-4 h-4"
                   />
 
-                  <span>{singlePostData.address}</span>
+                  <span>{post.address}</span>
                 </div>
 
                 {/* PRICE */}
@@ -95,7 +98,7 @@ const SinglePage = () => {
                     w-max
                   "
                 >
-                  $ {singlePostData.price}
+                  $ {post.price}
                 </div>
               </div>
 
@@ -117,7 +120,10 @@ const SinglePage = () => {
                 "
               >
                 <img
-                  src={userData.img}
+                  src={
+                    post.user?.avatar ||
+                    "/noavatar.jpg"
+                  }
                   alt=""
                   className="
                     w-14
@@ -127,7 +133,9 @@ const SinglePage = () => {
                   "
                 />
 
-                <span>{userData.name}</span>
+                <span>
+                  {post.user?.username}
+                </span>
               </div>
             </div>
 
@@ -138,9 +146,12 @@ const SinglePage = () => {
                 text-gray-600
                 leading-7
               "
-            >
-              {singlePostData.description}
-            </div>
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(
+                  post.postDetail?.desc || "",
+                )
+              }}
+            />
           </div>
         </div>
       </div>
@@ -162,7 +173,6 @@ const SinglePage = () => {
             gap-6
           "
         >
-          
           {/* GENERAL */}
           <div>
             <p
@@ -185,7 +195,6 @@ const SinglePage = () => {
                 rounded-xl
               "
             >
-              
               {/* UTILITIES */}
               <div className="flex items-center gap-3">
                 <img
@@ -206,7 +215,10 @@ const SinglePage = () => {
                   </span>
 
                   <p className="text-sm text-gray-500">
-                    Renter is responsible
+                    {post.postDetail?.utilities ===
+                      "owner"
+                      ? "Owner Responsible"
+                      : "Tenant Responsible"}
                   </p>
                 </div>
               </div>
@@ -231,12 +243,15 @@ const SinglePage = () => {
                   </span>
 
                   <p className="text-sm text-gray-500">
-                    Pets Allowed
+                    {post.postDetail?.pet ===
+                      "allowed"
+                      ? "Pets Allowed"
+                      : "Pets Not Allowed"}
                   </p>
                 </div>
               </div>
 
-              {/* FEES */}
+              {/* INCOME */}
               <div className="flex items-center gap-3">
                 <img
                   src="/fee.png"
@@ -252,18 +267,18 @@ const SinglePage = () => {
 
                 <div>
                   <span className="font-semibold">
-                    Property Fees
+                    Income Policy
                   </span>
 
                   <p className="text-sm text-gray-500">
-                    Must have 3x the rent in total household income
+                    {post.postDetail?.income}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* SIZES */}
+          {/* ROOM SIZES */}
           <div>
             <p
               className="
@@ -272,7 +287,7 @@ const SinglePage = () => {
                 mb-4
               "
             >
-             Room Sizes
+              Room Sizes
             </p>
 
             <div
@@ -282,7 +297,6 @@ const SinglePage = () => {
                 gap-4
               "
             >
-              
               <div
                 className="
                   flex
@@ -300,7 +314,9 @@ const SinglePage = () => {
                   className="w-5 h-5"
                 />
 
-                <span>80 sqft</span>
+                <span>
+                  {post.postDetail?.size} sqft
+                </span>
               </div>
 
               <div
@@ -320,7 +336,9 @@ const SinglePage = () => {
                   className="w-5 h-5"
                 />
 
-                <span>2 beds</span>
+                <span>
+                  {post.bedroom} Beds
+                </span>
               </div>
 
               <div
@@ -340,81 +358,9 @@ const SinglePage = () => {
                   className="w-5 h-5"
                 />
 
-                <span>1 bathroom</span>
-              </div>
-            </div>
-          </div>
-
-          {/* NEARBY */}
-          <div>
-            <p
-              className="
-                text-lg
-                font-bold
-                mb-4
-              "
-            >
-              Nearby Places
-            </p>
-
-            <div
-              className="
-                grid
-                grid-cols-1
-                sm:grid-cols-3
-                gap-4
-                bg-white
-                p-5
-                rounded-xl
-              "
-            >
-              
-              <div className="flex flex-col gap-1">
-                <img
-                  src="/school.png"
-                  alt=""
-                  className="w-6 h-6"
-                />
-
-                <span className="font-semibold">
-                  School
+                <span>
+                  {post.bathroom} Bathroom
                 </span>
-
-                <p className="text-sm text-gray-500">
-                  250m away
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <img
-                  src="/bus.png"
-                  alt=""
-                  className="w-6 h-6"
-                />
-
-                <span className="font-semibold">
-                  Bus Stop
-                </span>
-
-                <p className="text-sm text-gray-500">
-                  100m away
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <img
-                  src="/restaurant.png"
-                  alt=""
-                  className="w-6 h-6"
-                />
-
-                <span className="font-semibold">
-                  Restaurant
-                </span>
-
-                <p className="text-sm text-gray-500">
-                  200m away
-                </p>
               </div>
             </div>
           </div>
@@ -437,7 +383,7 @@ const SinglePage = () => {
                 h-[250px]
               "
             >
-              <Map items={[singlePostData]} />
+              <Map items={[post]} />
             </div>
           </div>
 
@@ -450,7 +396,6 @@ const SinglePage = () => {
               gap-4
             "
           >
-            
             <button
               className="
                 flex-1
