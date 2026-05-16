@@ -27,11 +27,14 @@ import jwt from "jsonwebtoken";
 
  const getPost = async (req, res) => {
   const id = req.params.id;
+
   try {
     const post = await prisma.post.findUnique({
       where: { id },
+
       include: {
         postDetail: true,
+
         user: {
           select: {
             username: true,
@@ -41,12 +44,27 @@ import jwt from "jsonwebtoken";
       },
     });
 
+    if (!post) {
+      return res
+        .status(404)
+        .json({
+          message: "Post not found",
+        });
+    }
+
+    let isSaved = false;
+
     const token = req.cookies?.token;
 
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
-        if (!err) {
-          const saved = await prisma.savedPost.findUnique({
+      try {
+        const payload = jwt.verify(
+          token,
+          process.env.JWT_SECRET_KEY
+        );
+
+        const saved =
+          await prisma.savedPost.findUnique({
             where: {
               userId_postId: {
                 postId: id,
@@ -54,14 +72,23 @@ import jwt from "jsonwebtoken";
               },
             },
           });
-          res.status(200).json({ ...post, isSaved: saved ? true : false });
-        }
-      });
+
+        isSaved = !!saved;
+      } catch (err) {
+        console.log(err);
+      }
     }
-    res.status(200).json({ ...post, isSaved: false });
+
+    return res.status(200).json({
+      ...post,
+      isSaved,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Failed to get post" });
+
+    return res.status(500).json({
+      message: "Failed to get post",
+    });
   }
 };
 

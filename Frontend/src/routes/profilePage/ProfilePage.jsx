@@ -9,22 +9,22 @@ import ProfileUpdatePage from '../profileUpdatePage/ProfileUpdatePage'
 
 const ProfilePage = () => {
 
-  const {updateUser, currentUser} = useContext(AuthContext)
+  const { updateUser, currentUser } = useContext(AuthContext)
   const navigate = useNavigate()
 
-const handleLogout = async () => {
-  try {
-    await apiRequest.post("/auth/logout");
+  const handleLogout = async () => {
+    try {
+      await apiRequest.post("/auth/logout");
 
-    updateUser(null)
-    navigate("/login");
-  } catch (err) {
-    console.log(err);
-  }
-};
+      updateUser(null)
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-   <div
+    <div
       className="
         flex
         flex-col
@@ -145,8 +145,8 @@ const handleLogout = async () => {
 
               <b>{currentUser?.email}</b>
               <button className="w-[100px] bg-teal-600 border-none text-white py-[10px] px-[20px] cursor-pointer rounded-[5px]" onClick={handleLogout}>
-  Logout
-</button>
+                Logout
+              </button>
             </div>
           </div>
 
@@ -170,8 +170,9 @@ const handleLogout = async () => {
               My List
             </h1>
 
-            <button
-              className="
+            <Link to="/add">
+              <button
+                className="
                 px-5
                 py-3
                 bg-[#fece51]
@@ -180,9 +181,10 @@ const handleLogout = async () => {
                 transition-all
                 duration-300
               "
-            >
-              Create New Post
-            </button>
+              >
+                Create New Post
+              </button>
+              </Link>
           </div>
 
           <List />
