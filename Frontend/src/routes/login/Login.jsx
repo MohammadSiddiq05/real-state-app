@@ -5,6 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import apiRequest from "../../lib/apiRequest";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 // Zod Schema
 const schema = z.object({
@@ -15,8 +17,9 @@ const schema = z.object({
 const Login = () => {
   const navigate = useNavigate();
 
-  // Backend Errors
   const [serverErrors, setServerErrors] = useState({});
+
+  const {updateUser} = useContext(AuthContext)
 
   const {
     register,
@@ -36,7 +39,8 @@ const Login = () => {
         data,
       );
 
-      localStorage.setItem("user", JSON.stringify(res.data  ))
+
+      updateUser(res.data)
 
       navigate("/");
     } catch (err) {

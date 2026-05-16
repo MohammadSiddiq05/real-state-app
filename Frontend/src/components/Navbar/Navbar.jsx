@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-
-  const user = true;
+    const {currentUser} = useContext(AuthContext)
+  
 
   return (
     <nav
@@ -102,12 +104,12 @@ const Navbar = () => {
 
         {/* RIGHT */}
         <div className="flex items-center">
-          {user ? (
+          {currentUser ? (
             <div className="hidden md:flex items-center gap-5">
               
               {/* PROFILE IMAGE */}
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={currentUser?.avatar || "/noavatar.png" }
                 alt=""
                 className="
                   w-11
@@ -121,7 +123,7 @@ const Navbar = () => {
               />
 
               <span className="font-medium">
-                John Doe
+                {currentUser?.username}
               </span>
 
               {/* PROFILE BUTTON */}
