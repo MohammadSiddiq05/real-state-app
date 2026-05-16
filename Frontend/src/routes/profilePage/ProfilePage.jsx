@@ -104,7 +104,7 @@ const handleLogout = async () => {
               </span>
 
               <img
-                src={currentUser?.avatar || "/noavatar.png"}
+                src={currentUser.avatar || "/noavatar.png"}
                 alt=""
                 className="
                   w-12

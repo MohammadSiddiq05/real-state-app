@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import UploadWidget from "../../components/uploadWidget/UploadWidget";
 
 const schema = z.object({
   username: z
@@ -30,7 +31,7 @@ function ProfileUpdatePage() {
   const [serverError, setServerError] =
     useState("");
 
-  const [avatar, setAvatar] = useState([]);
+  const [avatar, setAvatar] = useState("");
 
   const navigate = useNavigate();
 
@@ -50,28 +51,22 @@ function ProfileUpdatePage() {
 
   const onSubmit = async (data) => {
     setServerError("");
-
     try {
       const res = await apiRequest.put(
-        `/user/${currentUser.id}`,
+        `/user/${currentUser.id}`, 
         {
           username: data.username,
           email: data.email,
-          password: data.password,
-          avatar: avatar[0],
+          ...(data.password && { password: data.password }),
+          avatar: avatar || currentUser.avatar,
         }
       );
 
       updateUser(res.data);
-
       navigate("/profile");
     } catch (err) {
       console.log(err);
-
-      setServerError(
-        err.response?.data?.message ||
-          "Something went wrong"
-      );
+      setServerError(err.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -250,32 +245,23 @@ function ProfileUpdatePage() {
         "
       >
         {/* AVATAR */}
-          <img
-            src={currentUser.avatar || "/noavatar.png"}
-            alt=""
-            className="
-              w-[220px]
-              h-[220px]
-              rounded-full
-              object-cover
-              border-4
-              border-white
-              shadow-lg
-            "
-          />
-        
+        <img
+          src={avatar || currentUser.avatar || "/noavatar.png"}
+          alt=""
+          className="w-[220px] h-[220px] rounded-full object-cover border-4 border-white shadow-lg"
+        />
 
-        {/* UPLOAD */}
-        {/* <UploadWidget
+
+        <UploadWidget
           uwConfig={{
-            cloudName: "lamadev",
-            uploadPreset: "estate",
+            cloudName: "MERNInstaFeedClone",
+            uploadPreset: "realstate",
             multiple: false,
             maxImageFileSize: 2000000,
             folder: "avatars",
           }}
-          setState={setAvatar}
-        /> */}
+          setAvatar={setAvatar}
+        />
       </div>
     </div>
   );
