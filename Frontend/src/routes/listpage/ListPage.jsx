@@ -1,62 +1,48 @@
-import React from "react";
-import { listData } from "../../lib/dummydata";
+import React, { Suspense } from "react";
 import Filter from "../../components/filter/filter";
 import Card from "../../components/card/card";
 import Map from "../../components/map/Map";
+import { useLoaderData, Await } from "react-router-dom"; 
 
 const ListPage = () => {
-  const data = listData;
+  const data = useLoaderData(); 
 
   return (
-    <div
-      className="
-        flex
-        h-full
-      "
-    >
-      
-      <div
-        className="
-          flex-[3]
-          h-full
-          overflow-y-auto
-        "
-      >
-        <div
-          className="
-            flex
-            flex-col
-            gap-12
-            pr-2
-            pb-10
-          "
-        >
-          
+    <div className="flex h-full">
+
+      {/* LEFT */}
+      <div className="flex-[3] h-full overflow-y-auto">
+        <div className="flex flex-col gap-12 pr-2 pb-10">
           <Filter />
 
-          {data.map((item) => (
-            <Card
-              key={item.id}
-              item={item}
-            />
-          ))}
+          <Suspense fallback={<p>Loading posts...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p className="text-red-500">Error loading posts!</p>}
+            >
+              {(response) =>
+                response.data.length > 0 ? (
+                  response.data.map((item) => (
+                    <Card key={item.id} item={item} />
+                  ))
+                ) : (
+                  <p className="text-gray-500">No posts found</p>
+                )
+              }
+            </Await>
+          </Suspense>
         </div>
       </div>
 
-      <div
-        className="
-          hidden
-          lg:flex
-          flex-[2]
-          bg-[#fcf5f3]
-          items-center
-          justify-center
-          text-2xl
-          font-semibold
-        "
-      >
-        <Map items={data}/>
+      {/* RIGHT */}
+      <div className="hidden lg:flex flex-[2] bg-[#fcf5f3] items-center justify-center">
+        <Suspense fallback={null}>
+          <Await resolve={data.postResponse}>
+            {(response) => <Map items={response.data} />}
+          </Await>
+        </Suspense>
       </div>
+
     </div>
   );
 };
