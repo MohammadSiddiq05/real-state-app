@@ -10,7 +10,7 @@ const List = ({post}) => {
         gap-[50px]
       "
     >
-      {post.map((item) => (
+      {post?.map((item) => (
         <Card
           key={item.id}
           item={item}
