@@ -1,8 +1,7 @@
 import React from "react";
-import { listData } from "../../lib/dummydata";
 import Card from "../card/Card";
 
-const List = () => {
+const List = ({post}) => {
   return (
     <div
       className="
@@ -11,7 +10,7 @@ const List = () => {
         gap-[50px]
       "
     >
-      {listData.map((item) => (
+      {post.map((item) => (
         <Card
           key={item.id}
           item={item}

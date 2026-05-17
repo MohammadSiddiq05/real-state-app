@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Dompurify from "dompurify"
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
 
 const SinglePage = () => {
   const post = useLoaderData();
+  const [saved, setSaved] = useState(post.isSaved)
+  const { currentUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handleSave = async () => {
+
+
+    if (!currentUser) {
+      navigate("/login")
+    }
+    setSaved((prev) => !prev)
+    try {
+
+      await apiRequest.post("/user/save", {
+        postId: post.id
+      })
+
+    } catch (err) {
+      console.log(err)
+      setSaved((prev) => !prev)
+    }
+  }
 
   if (!post) {
     return <p>Loading...</p>;
@@ -422,28 +446,24 @@ const SinglePage = () => {
             </button>
 
             <button
-              className="
+              className={`
                 flex-1
                 flex
                 items-center
                 justify-center
                 gap-2
                 border
-                border-[#fece51]
-                bg-white
+              border-[#fece51]
                 py-4
                 rounded-lg
-                hover:bg-[#fff7dd]
-                transition
-              "
+              hover:bg-[#fff7dd]
+              transition
+              ${saved ? "bg-[#fece51]" : "bg-white"} 
+  `}
+              onClick={handleSave}
             >
-              <img
-                src="/save.png"
-                alt=""
-                className="w-4 h-4"
-              />
-
-              Save the Place
+              <img src="/save.png" alt="" className="w-4 h-4" />
+              {saved ? "Place Saved" : "Save the Place"}
             </button>
           </div>
         </div>
