@@ -244,7 +244,16 @@ const ProfilePage = () => {
             py-5
           "
         >
-          <Chat />
+          <Suspense fallback={<p>Loading chats...</p>}>
+            <Await
+              resolve={data.chatResponse}
+              errorElement={<p className="text-red-500">Error loading chats!</p>}
+            >
+              {(response) =>
+                <Chat chats={response.data}/>
+              }
+            </Await>
+          </Suspense>
         </div>
       </div>
     </div>

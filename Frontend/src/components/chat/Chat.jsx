@@ -1,217 +1,193 @@
-import React, { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
+import { format } from "timeago.js";
 
-const Chat = () => {
-  const [chat, setChat] = useState(true);
+function Chat({ chats = [] }) {
+  const [chat, setChat] = useState(null);
+  const { currentUser } = useContext(AuthContext);
+  const messageEndRef = useRef();
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]);
+
+  const handleOpenChat = async (id, receiver) => {
+    try {
+      const res = await apiRequest.get("/chat/" + id);
+      setChat({ ...res.data, receiver });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const text = formData.get("text");
+    if (!text) return;
+    try {
+      const res = await apiRequest.post("/message/" + chat.id, { text });
+      setChat((prev) => ({ ...prev, messages: [...prev.messages, res.data] }));
+      e.target.reset();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <div
-      className="
-        h-full
-        flex
-        flex-col
-      "
-    >
-      {/* MESSAGES */}
-      <div
-        className="
-          flex-1
-          flex
-          flex-col
-          gap-5
-          overflow-y-auto
-          pr-2
-        "
-      >
+    <div className="h-full flex flex-col">
+
+      {/* MESSAGES LIST */}
+      <div className="flex-1 flex flex-col gap-5 overflow-y-auto">
         <h1 className="text-3xl font-light">
           Messages
         </h1>
 
-        {[1, 2, 3, 4, 5].map((item) => (
-          <div
-            key={item}
-            className="
-              bg-white
-              p-5
-              rounded-xl
-              flex
-              items-center
-              gap-5
-              cursor-pointer
-              shadow-sm
-              hover:shadow-md
-              transition
+        {chats.filter(
+          (c) => c.receiver && c.lastMessage
+        ).length === 0 ? (
+          <p className="text-gray-400 text-sm">
+            No messages yet
+          </p>
+        ) : (
+          chats
+            .filter(
+              (c) => c.receiver && c.lastMessage
+            )
+            .map((c) => (
+              <div
+                key={c.id}
+                onClick={() =>
+                  handleOpenChat(c.id, c.receiver)
+                }
+                style={{
+                  backgroundColor:
+                    c.seenBy.includes(currentUser.id) ||
+                      chat?.id === c.id
+                      ? "white"
+                      : "#fecd514e",
+                }}
+                className="
+            p-5
+            rounded-xl
+            flex
+            items-center
+            gap-5
+            cursor-pointer
+          "
+              >
+                <img
+                  src={
+                    c.receiver?.avatar ||
+                    "/noavatar.png"
+                  }
+                  alt=""
+                  className="
+              w-10
+              h-10
+              rounded-full
+              object-cover
             "
-          >
-            <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              alt=""
-              className="
-                w-12
-                h-12
-                rounded-full
-                object-cover
-              "
-            />
+                />
 
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold">
-                John Doe
-              </span>
+                <div className="flex flex-col gap-1">
+                  <span className="font-bold">
+                    {c.receiver?.username}
+                  </span>
 
-              <p className="text-sm text-gray-500">
-                Lorem ipsum dolor sit amet,
-                consectetur adipisicing elit.
-              </p>
-            </div>
-          </div>
-        ))}
+                  <p className="text-sm text-gray-500">
+                    {c.lastMessage}
+                  </p>
+                </div>
+              </div>
+            ))
+        )}
       </div>
-
       {/* CHAT BOX */}
       {chat && (
-        <div
-          className="
-            flex-1
-            bg-white
-            mt-5
-            rounded-2xl
-            overflow-hidden
-            flex
-            flex-col
-            shadow-sm
-          "
-        >
+        <div className="flex-1 bg-white flex flex-col justify-between mt-4">
+
           {/* TOP */}
-          <div
-            className="
-              bg-[#f7c14b85]
-              px-5
-              py-4
-              flex
-              items-center
-              justify-between
-            "
-          >
-            <div className="flex items-center gap-4">
+          <div className="bg-[#f7c14b85] p-5 font-bold flex items-center justify-between">
+            <div className="flex items-center gap-5">
               <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={chat.receiver?.avatar || "/noavatar.png"}
                 alt=""
-                className="
-                  w-10
-                  h-10
-                  rounded-full
-                  object-cover
-                "
+                className="w-8 h-8 rounded-full object-cover"
               />
-
-              <span className="font-semibold">
-                John Doe
-              </span>
+              <span>{chat.receiver?.username}</span>
             </div>
-
-            <button
-              onClick={() => setChat(false)}
-              className="
-                text-xl
-                font-bold
-                cursor-pointer
-              "
+            <span
+              onClick={() => setChat(null)}
+              className="cursor-pointer"
             >
-              ×
-            </button>
+              X
+            </span>
           </div>
 
           {/* CENTER */}
-          <div
-            className="
-              h-[350px]
-              overflow-y-auto
-              p-5
-              flex
-              flex-col
-              gap-5
-            "
-          >
-            {[1, 2, 3, 4, 5].map((msg, index) => (
+          <div className="h-[350px] overflow-y-auto p-5 flex flex-col gap-5">
+            {chat.messages?.map((message) => (
               <div
-                key={index}
+                key={message.id}
                 className={`
-                  flex
-                  flex-col
-                  gap-2
-                  max-w-[70%]
-                  ${index % 2 === 0
-                    ? "self-start"
-                    : "self-end text-right"
+        flex
+        ${String(message.userId) === String(currentUser.id)
+                    ? "justify-end"   // ✅ apna msg — right
+                    : "justify-start" // ✅ doosre ka msg — left
                   }
-                `}
+      `}
               >
-                <p
-                  className="
-                    bg-[#f7f7f7]
-                    p-3
-                    rounded-xl
-                    text-sm
-                  "
-                >
-                  Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit.
-                </p>
-
-                <span
-                  className="
-                    text-xs
-                    text-gray-500
-                  "
-                >
-                  1 hour ago
-                </span>
+                <div className={`
+        max-w-[50%]
+        flex
+        flex-col
+        gap-1
+        ${String(message.userId) === String(currentUser.id)
+                    ? "items-end"
+                    : "items-start"
+                  }
+      `}>
+                  <p className={`
+          text-sm px-4 py-2 rounded-2xl
+          ${String(message.userId) === String(currentUser.id)
+                      ? "bg-[#fece51] text-black rounded-br-none"
+                      : "bg-gray-100 text-black rounded-bl-none"
+                    }
+        `}>
+                    {message.text}
+                  </p>
+                  <span className="text-xs text-gray-400">
+                    {format(message.createdAt)}
+                  </span>
+                </div>
               </div>
             ))}
+            <div ref={messageEndRef}></div>
           </div>
-
           {/* BOTTOM */}
-          <div
-            className="
-              border-t
-              border-[#f7c14b85]
-              h-[70px]
-              flex
-              items-center
-            "
+          <form
+            onSubmit={handleSubmit}
+            className="border-t-2 border-[#f7c14b85] h-[60px] flex items-center"
           >
             <textarea
+              name="text"
+              className="flex-[3] h-full border-none outline-none p-5 resize-none text-sm"
               placeholder="Write a message..."
-              className="
-                flex-1
-                h-full
-                resize-none
-                outline-none
-                border-none
-                p-5
-                text-sm
-              "
             />
 
             <button
-              className="
-                h-full
-                px-6
-                bg-[#f7c14b85]
-                flex
-                items-center
-                justify-center
-                hover:bg-[#f5b92f]
-                transition
-              "
+              type="submit"
+              className="flex-1 bg-[#f7c14b85] h-full border-none cursor-pointer hover:bg-[#f5b92f] transition"
             >
               Send
             </button>
-          </div>
+          </form>
         </div>
       )}
     </div>
   );
-};
+}
 
 export default Chat;
