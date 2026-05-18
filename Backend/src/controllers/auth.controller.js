@@ -2,6 +2,8 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import prisma from "../../lib/prisma.js"
 
+
+
 const register = async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -37,6 +39,9 @@ const register = async (req, res) => {
     });
   }
 };
+
+
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -94,6 +99,8 @@ const login = async (req, res) => {
     });
   }
 };
+
+
 
 const logout = (req, res) => {
     res.clearCookie("token").status(200).json({

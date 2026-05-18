@@ -5,9 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 const HomePage = () => {
 
-  const {currentUser} = useContext(AuthContext)
-
-  console.log(currentUser)
+  const { currentUser } = useContext(AuthContext)
 
   return (
     <div
@@ -16,12 +14,11 @@ const HomePage = () => {
         flex-col
         md:flex-row
         h-screen
-        overflow-hidden
         max-w-[1400px]
         mx-auto
       "
     >
-      
+
       {/* LEFT */}
       <div
         className="
@@ -31,7 +28,6 @@ const HomePage = () => {
           px-5
           md:px-10
           lg:px-16
-          pt-[120px]
         "
       >
         <div
@@ -43,7 +39,7 @@ const HomePage = () => {
             w-full
           "
         >
-          
+
           {/* TITLE */}
           <h1
             className="
@@ -87,7 +83,7 @@ const HomePage = () => {
               pt-2
             "
           >
-            
+
             <div>
               <h1 className="text-3xl font-bold">
                 16+
@@ -122,31 +118,9 @@ const HomePage = () => {
       </div>
 
       {/* RIGHT IMAGE */}
-      <div
-        className="
-          hidden
-          md:block
-          flex-[2]
-          bg-[#fcf5f3]
-          relative
-          overflow-hidden
-          -mt-[100px]
-          h-[calc(100vh+100px)]
-        "
-      >
-        <img
-          src="/bg.png"
-          alt="hero"
-          className="
-            absolute
-            top-0
-            right-[-15%]
-            h-full
-            max-w-none
-            object-cover
-            scale-110
-          "
-        />
+      <div className="flex-[3] bg-[#fcf5f3] min-h-screen flex items-start justify-center">
+        <img src="/bg.png" alt="" className="w-full object-contain" />
+
       </div>
     </div>
   );

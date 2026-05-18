@@ -37,6 +37,8 @@ const getChats = async (req, res) => {
 };
 
 
+
+
 const getChat = async (req, res) => {
   const tokenUserId = req.userId;
 
@@ -75,6 +77,8 @@ const getChat = async (req, res) => {
 };
 
 
+
+
 const addChat = async (req, res) => {
   const tokenUserId = req.userId;
   try {
@@ -91,10 +95,10 @@ const addChat = async (req, res) => {
 };
 
 
+
+
 const readChat = async (req, res) => {
   const tokenUserId = req.userId;
-
-  
   try {
     const chat = await prisma.chat.update({
       where: {
@@ -118,8 +122,8 @@ const readChat = async (req, res) => {
 
 
 export default {
-    getChat,
-    getChats,
-    addChat,
-    readChat
+  getChat,
+  getChats,
+  addChat,
+  readChat
 }

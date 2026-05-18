@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { SocketContext } from "../../context/SocketContext";
 import apiRequest from "../../lib/apiRequest";
 import { format } from "timeago.js";
+import { useNotificationStore } from "../../lib/notificationStore";
 
 const schema = z.object({
   text: z.string().min(1, "Message cannot be empty"),
@@ -16,17 +17,18 @@ function Chat({ chats = [] }) {
   const { currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
   const messageEndRef = useRef();
+  const decrease = useNotificationStore((state) => state.decrease);
+  
+
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
 
-  // ✅ Auto scroll
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat]);
 
-  // ✅ Socket — incoming message + read
   useEffect(() => {
     const read = async () => {
       try {
@@ -56,6 +58,9 @@ function Chat({ chats = [] }) {
   const handleOpenChat = async (id, receiver) => {
     try {
       const res = await apiRequest.get("/chat/" + id);
+      if(!res.data.seenBy.includes(currentUser.id)){
+        decrease()
+      }
       setChat({ ...res.data, receiver });
     } catch (err) {
       console.log(err);
@@ -68,7 +73,6 @@ function Chat({ chats = [] }) {
         text: data.text,
       });
 
-      // ✅ Socket — message bhejo
       socket?.emit("sendMessage", {
         receiverId: chat.receiver.id,
         data: res.data,

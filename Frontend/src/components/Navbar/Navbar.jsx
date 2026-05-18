@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { useNotificationStore } from "../../lib/notificationStore";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-    const {currentUser} = useContext(AuthContext)
-  
+  const { currentUser } = useContext(AuthContext)
+
+  const fetch = useNotificationStore((state) => state.fetch);
+  const number = useNotificationStore((state) => state.number);
+
+  if (currentUser) fetch();
+
 
   return (
     <nav
@@ -106,10 +112,10 @@ const Navbar = () => {
         <div className="flex items-center">
           {currentUser ? (
             <div className="hidden md:flex items-center gap-5">
-              
+
               {/* PROFILE IMAGE */}
               <img
-                src={currentUser?.avatar || "/noavatar.png" }
+                src={currentUser?.avatar || "/noavatar.png"}
                 alt=""
                 className="
                   w-11
@@ -140,7 +146,7 @@ const Navbar = () => {
               >
                 Profile
 
-                <div
+                {number > 0 && <div
                   className="
                     absolute
                     -top-2
@@ -156,8 +162,8 @@ const Navbar = () => {
                     justify-center
                   "
                 >
-                  3
-                </div>
+                  {number}
+                </div>}
               </Link>
             </div>
           ) : (
@@ -205,8 +211,7 @@ const Navbar = () => {
             className={`
               fixed
               top-0
-              ${
-                open ? "right-0" : "-right-full"
+              ${open ? "right-0" : "-right-full"
               }
               w-[70%]
               sm:w-[50%]

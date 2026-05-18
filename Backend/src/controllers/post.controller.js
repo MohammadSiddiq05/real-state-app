@@ -1,7 +1,7 @@
 import prisma from "../../lib/prisma.js";
 import jwt from "jsonwebtoken";
 
- const getPosts = async (req, res) => {
+const getPosts = async (req, res) => {
   const query = req.query;
 
   try {
@@ -25,7 +25,10 @@ import jwt from "jsonwebtoken";
   }
 };
 
- const getPost = async (req, res) => {
+
+
+
+const getPost = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -92,7 +95,9 @@ import jwt from "jsonwebtoken";
   }
 };
 
- const addPost = async (req, res) => {
+
+
+const addPost = async (req, res) => {
   const body = req.body;
   const tokenUserId = req.userId;
 
@@ -113,7 +118,9 @@ import jwt from "jsonwebtoken";
   }
 };
 
- const updatePost = async (req, res) => {
+
+
+const updatePost = async (req, res) => {
   try {
     res.status(200).json();
   } catch (err) {
@@ -121,7 +128,11 @@ import jwt from "jsonwebtoken";
     res.status(500).json({ message: "Failed to update posts" });
   }
 };
- const deletePost = async (req, res) => {
+
+
+
+
+const deletePost = async (req, res) => {
   const id = req.params.id;
   const tokenUserId = req.userId;
 
@@ -147,9 +158,9 @@ import jwt from "jsonwebtoken";
 
 
 export default {
-    getPost,
-    getPosts,
-    addPost,
-    updatePost,
-    deletePost
+  getPost,
+  getPosts,
+  addPost,
+  updatePost,
+  deletePost
 }

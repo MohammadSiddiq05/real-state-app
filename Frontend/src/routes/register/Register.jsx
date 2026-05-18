@@ -38,8 +38,8 @@ const Register = () => {
 
     return (
         <div className="h-screen flex">
-            <div className="flex-[3] flex items-center justify-center">
-                <div className="w-full max-w-md px-6">
+            <div className="flex-[4] flex items-center justify-center">
+                <div className="w-full max-w-md">
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
                         <h1 className="text-3xl font-bold mb-2">Create an Account</h1>
 
