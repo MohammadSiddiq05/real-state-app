@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import apiRequest from "../../lib/apiRequest";
-import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 // Zod Schema
@@ -19,7 +17,7 @@ const Login = () => {
 
   const [serverErrors, setServerErrors] = useState({});
 
-  const {updateUser} = useContext(AuthContext)
+  const { updateUser } = useContext(AuthContext);
 
   const {
     register,
@@ -30,17 +28,12 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    // Clear old backend errors
     setServerErrors({});
 
     try {
-      const res = await apiRequest.post(
-        "/auth/login",
-        data,
-      );
+      const res = await apiRequest.post("/auth/login", data);
 
-
-      updateUser(res.data)
+      updateUser(res.data);
 
       navigate("/");
     } catch (err) {
@@ -51,9 +44,11 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex">
-      <div className="flex-[3] flex items-center justify-center">
-        <div className="w-full max-w-md px-6">
+    <div className="flex min-h-screen">
+      
+      {/* LEFT */}
+      <div className="flex-[4] flex items-center justify-center">
+        <div className="w-full max-w-md">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-5"
@@ -62,6 +57,7 @@ const Login = () => {
               Welcome back
             </h1>
 
+            {/* EMAIL */}
             <div>
               <input
                 type="email"
@@ -83,6 +79,7 @@ const Login = () => {
               )}
             </div>
 
+            {/* PASSWORD */}
             <div>
               <input
                 type="password"
@@ -104,12 +101,14 @@ const Login = () => {
               )}
             </div>
 
+            {/* SERVER ERROR */}
             {serverErrors.message && (
               <p className="text-red-500 text-sm">
                 {serverErrors.message}
               </p>
             )}
 
+            {/* BUTTON */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -128,12 +127,9 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="flex-[2] bg-[#fcf5f3] flex items-center justify-center">
-        <img
-          src="/bg.png"
-          alt=""
-          className="w-full object-contain"
-        />
+      {/* RIGHT */}
+      <div className="flex-[2] bg-[#fcf5f3] min-h-screen flex items-start justify-center">
+        <img src="/bg.png" alt="" className="w-full object-contain" />
       </div>
     </div>
   );

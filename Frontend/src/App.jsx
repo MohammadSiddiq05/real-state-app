@@ -28,12 +28,12 @@ const App = () => {
         {
           path: "/list",
           element: <ListPage />,
-          loader  : listPageLoader
+          loader: listPageLoader
         },
         {
           path: "/:id",
           element: <SinglePage />,
-          loader : singlePageLoader
+          loader: singlePageLoader
         },
 
         {
@@ -45,25 +45,26 @@ const App = () => {
           element: <Register />,
         },
       ]
-    }, {
-  path: "/",
-  element: <RequireAuth />,
-  children: [
-    {
-      path: "/profile",
-      element: <ProfilePage />,
-      loader : profilePageLoader  
     },
     {
-      path: "/profile/update",
-      element: <ProfileUpdatePage />
-    },
-    {
-      path : "/add",
-      element : <NewPostPage/>
+      path: "/",
+      element: <RequireAuth />,
+      children: [
+        {
+          path: "/profile",
+          element: <ProfilePage />,
+          loader: profilePageLoader
+        },
+        {
+          path: "/profile/update",
+          element: <ProfileUpdatePage />
+        },
+        {
+          path: "/add",
+          element: <NewPostPage />
+        }
+      ]
     }
-  ]
-}
   ])
   return (
 
