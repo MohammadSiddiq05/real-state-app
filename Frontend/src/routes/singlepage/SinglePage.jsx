@@ -31,6 +31,25 @@ const SinglePage = () => {
     }
   }
 
+  const handleSendMessage = async () => {
+  if (!currentUser) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const res = await apiRequest.post("/chat", {
+      receiverId: post.userId,
+    });
+
+    navigate("/profile", {
+      state: { chatId: res.data.id },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
   if (!post) {
     return <p>Loading...</p>;
   }
@@ -435,6 +454,8 @@ const SinglePage = () => {
                 hover:bg-[#fff7dd]
                 transition
               "
+
+              onClick={handleSendMessage}
             >
               <img
                 src="/chat.png"
