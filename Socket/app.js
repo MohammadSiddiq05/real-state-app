@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", ({ receiverId, data }) => {
     const receiver = getUser(receiverId);
     if (receiver) {
-      io.to(receiver.socketId).emit("getMessage", data);
+      io.to(receiver.socketId).emit("getMessage", data); 
     }
   });
 
@@ -40,4 +40,4 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen("4000");
+io.listen(4000);
