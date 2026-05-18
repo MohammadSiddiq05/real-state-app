@@ -9,7 +9,7 @@ function Map({ items }) {
         items.length === 1
           ? [items[0].latitude, items[0].longitude]
           : items.length > 0
-            ? [items[0].latitude, items[0].longitude] 
+            ? [items[0].latitude, items[0].longitude]
             : [24.8607, 67.0011]
       }
       zoom={7}
@@ -21,11 +21,9 @@ function Map({ items }) {
       "
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">
-         OpenStreetMap</a> \contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; OpenStreetMap contributors'
+        url="https://tile.openstreetmap.de/{z}/{x}/{y}.png"
       />
-
       {items.map((item) => (
         <Pin
           item={item}
