@@ -1,25 +1,38 @@
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import prisma from "../../lib/prisma.js"
-
-
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import prisma from "../../lib/prisma.js";
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    const existingUser = await prisma.user.findUnique({
+
+    // CHECK EMAIL
+    const existingEmail = await prisma.user.findUnique({
       where: { email },
     });
 
-    if (existingUser) {
+    if (existingEmail) {
       return res.status(400).json({
-        message: "User already exists",
+        message: "Email already exists",
       });
     }
 
+    // CHECK USERNAME
+    const existingUsername = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (existingUsername) {
+      return res.status(400).json({
+        message: "Username already exists",
+      });
+    }
+
+    // HASH PASSWORD
     const hashPassword = await bcrypt.hash(password, 10);
 
+    // CREATE USER
     await prisma.user.create({
       data: {
         username,
@@ -31,6 +44,7 @@ const register = async (req, res) => {
     res.status(201).json({
       message: "User created successfully",
     });
+
   } catch (err) {
     console.log(err);
 
@@ -40,25 +54,23 @@ const register = async (req, res) => {
   }
 };
 
-
-
-
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
-
-
+    // EMAIL NOT FOUND
     if (!user) {
       return res.status(401).json({
-        email: "Email not found",
+        message: "Email not found",
       });
     }
 
+    // CHECK PASSWORD
     const isPasswordValid = await bcrypt.compare(
       password,
       user.password
@@ -66,24 +78,29 @@ const login = async (req, res) => {
 
     if (!isPasswordValid) {
       return res.status(401).json({
-        password: "Incorrect password",
+        message: "Incorrect password",
       });
     }
 
+    // TOKEN AGE
     const age = 1000 * 60 * 60 * 24 * 7;
 
+    // JWT TOKEN
     const token = jwt.sign(
       {
         id: user.id,
-        isAdmin : false
+        isAdmin: false,
       },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: age }
+      {
+        expiresIn: age,
+      }
     );
 
-    const {password: userPassword, ...userInfo} = user
+    // REMOVE PASSWORD
+    const { password: userPassword, ...userInfo } = user;
 
-
+    // SEND COOKIE
     res
       .cookie("token", token, {
         httpOnly: true,
@@ -91,6 +108,7 @@ const login = async (req, res) => {
       })
       .status(200)
       .json(userInfo);
+
   } catch (err) {
     console.log(err);
 
@@ -100,12 +118,17 @@ const login = async (req, res) => {
   }
 };
 
-
-
 const logout = (req, res) => {
-    res.clearCookie("token").status(200).json({
-        message: "User logout successfully"
-    })
-}
+  res
+    .clearCookie("token")
+    .status(200)
+    .json({
+      message: "User logout successfully",
+    });
+};
 
-export default { register, login, logout }
+export default {
+  register,
+  login,
+  logout,
+};
