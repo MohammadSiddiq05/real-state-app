@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 
 const io = new Server({
   cors: {
-    origin: "process.env.FRONTEND_URL",
+    origin: process.env.FRONTEND_URL || "*",
   },
 });
 
@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", ({ receiverId, data }) => {
     const receiver = getUser(receiverId);
     if (receiver) {
-      io.to(receiver.socketId).emit("getMessage", data); 
+      io.to(receiver.socketId).emit("getMessage", data);
     }
   });
 
@@ -40,4 +40,6 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(4000);
+const PORT = process.env.PORT || 4000;
+io.listen(PORT);
+console.log(`Socket running on port ${PORT}`);
