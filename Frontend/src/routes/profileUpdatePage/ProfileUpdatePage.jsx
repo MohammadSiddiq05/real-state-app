@@ -51,14 +51,17 @@ function ProfileUpdatePage() {
 
   const onSubmit = async (data) => {
     setServerError("");
+    console.log("avatar", avatar);
     try {
       const res = await apiRequest.put(
-        `/user/${currentUser.id}`, 
+        `/user/${currentUser.id}`,
         {
           username: data.username,
           email: data.email,
           ...(data.password && { password: data.password }),
-          avatar: avatar || currentUser.avatar,
+          avatar: Array.isArray(avatar)
+            ? avatar[0]
+            : avatar || currentUser.avatar,
         }
       );
 

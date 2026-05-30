@@ -165,7 +165,7 @@ const SinglePage = () => {
                 <img
                   src={
                     post.user?.avatar ||
-                    "/noavatar.jpg"
+                    "/noavatar.png"
                   }
                   alt=""
                   className="
