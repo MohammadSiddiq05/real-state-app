@@ -1,11 +1,7 @@
-import dotenv from "dotenv"
-dotenv.config()
+import './instrument.js'
 
 import app from "./src/app.js";
-
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
-});
+import { connectDB } from "./src/config/db.js";
 
 const PORT = process.env.PORT || 3000;
 
