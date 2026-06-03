@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import Navbar from "../../components/navbar/Navbar";
-import { Outlet, Navigate } from "react-router-dom"; // ✅ Navigate add kiya
+import Navbar from "../../components/Navbar/Navbar";
+import { Outlet, Navigate } from "react-router-dom"; 
 import { AuthContext } from "../../context/AuthContext";
 
 const Layout = () => {

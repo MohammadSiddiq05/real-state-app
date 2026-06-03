@@ -1,3 +1,5 @@
+
+
 import express from "express"
 import cookieParser from "cookie-parser"
 import authRoute from "./routes/auth.route.js"
@@ -20,5 +22,7 @@ app.use("/api/post", postRoute)
 app.use("/api/test", testRoute)
 app.use("/api/chat", chatRoute)
 app.use("/api/message", messageRoute)
+
+
 
 export default app

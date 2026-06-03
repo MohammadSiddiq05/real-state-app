@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-import Filter from "../../components/filter/filter";
-import Card from "../../components/card/card";
+import Filter from "../../components/Filter/Filter";
+import Card from "../../components/Card/Card";
 import Map from "../../components/map/Map";
 import { useLoaderData, Await } from "react-router-dom"; 
 
